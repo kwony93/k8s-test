@@ -14,7 +14,7 @@ pipeline {
                 checkout scmGit(branches: [[name: '*/main']], 
                     extensions: [], 
                     userRemoteConfigs: [[credentialsId: 'github-ssh-key', 
-                    url: 'git@github.com:<네-아이디>/k8s-test.git']])
+                    url: 'git@github.com:kwony93/k8s-test.git']])
             }
         }
 
