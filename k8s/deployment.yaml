@@ -16,6 +16,7 @@ spec:
       containers:
       - name: petclinic
         image: hklee2748/petclinic:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         volumeMounts:
