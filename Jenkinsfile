@@ -47,8 +47,10 @@ pipeline {
                 // 쿠버네티스에 배포하기 (나중에 deployment.yaml 필요함)
                 withKubeConfig([credentialsId: 'k8s-config']) {
                     sh 'kubectl apply -f k8s/deployment.yaml'
+                    sh "kubectl rollout restart deployment petclinic"
                 }
             }
         }
+        
     }
 }
