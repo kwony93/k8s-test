@@ -45,7 +45,9 @@ pipeline {
         stage('5. 배포 (K8s Deploy)') {
             steps {
                 // 쿠버네티스에 배포하기 (나중에 deployment.yaml 필요함)
-                sh 'kubectl apply -f k8s/deployment.yaml'
+                withKubeConfig([credentialsId: 'k8s-config']) {
+                    sh 'kubectl apply -f k8s/deployment.yaml'
+                }
             }
         }
     }
