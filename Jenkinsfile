@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('1. 준비 (Checkout)') {
             steps {
-                // 아까 만든 SSH 자격 증명(github-ssh-key) 사용
+                // 깃허브 인증
                 checkout scmGit(branches: [[name: '*/main']], 
                     extensions: [], 
                     userRemoteConfigs: [[credentialsId: 'github-ssh-key', 
@@ -25,14 +25,27 @@ pipeline {
             }
         }
 
-        stage('3. 이미지 굽기 (Docker Build)') {
+        stage('3. 이미지 굽기 및 푸시') {
             steps {
-                // 나중에 도커 허브나 레지스트리에 올릴 이미지 만들기
-                sh 'docker build -t hklee2748/petclinic:${BUILD_NUMBER} .'
+                // 도커 허브용 이미지 생성
+                script {
+                    docker.withRegistry('', 'docker-hub-key') {
+                        def appImage = docker.build("hklee2748/petclinic:${BUILD_NUMBER}" )
+                        appImage.push()
+                        appImage.push("latest")
+                    }
+                }
             }
         }
-
-        stage('4. 배포 (K8s Deploy)') {
+            // Docker Image Remove
+        stage('4. Docker Image Remove') {
+          steps {
+            echo 'Docker Image Remove'
+            sh 'docker rmi -f hklee2748/petclinic:$BUILD_NUMBER'
+          }
+        }
+        
+        stage('5. 배포 (K8s Deploy)') {
             steps {
                 // 쿠버네티스에 배포하기 (나중에 deployment.yaml 필요함)
                 sh 'kubectl apply -f k8s/deployment.yaml'
