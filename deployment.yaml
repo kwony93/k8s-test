@@ -5,12 +5,12 @@ metadata:
   name: petclinic
 spec:
   replicas: 2
-  seletor:
+  selector:
     matchLabels:
       app: petclinic
     template:
       metadata:
-        lables:
+        labels:
           app: petclinic
       spec:
         containers:
