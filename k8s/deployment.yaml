@@ -8,28 +8,28 @@ spec:
   selector:
     matchLabels:
       app: petclinic
-    template:
-      metadata:
-        labels:
-          app: petclinic
-      spec:
-        containers:
-        - name: petclinic
-          image: hklee2748/petclinic:latest
-          ports:
-          - containerPort: 8080
-          volumeMounts:
-          - name: petclinic-home
-            mountPath: /var/petclinic-home
-          - name: docker-sock
-            mountPath: /var/run/docker.sock
-        volumes:
+  template:
+    metadata:
+      labels:
+        app: petclinic
+    spec:
+      containers:
+      - name: petclinic
+        image: hklee2748/petclinic:latest
+        ports:
+        - containerPort: 8080
+        volumeMounts:
         - name: petclinic-home
-          persistentVolumeClaim:
-            claimName: petclinic-pvc
+          mountPath: /var/petclinic-home
         - name: docker-sock
-          hostPath:
-            path: /var/run/docker.sock
+          mountPath: /var/run/docker.sock
+      volumes:
+      - name: petclinic-home
+        persistentVolumeClaim:
+          claimName: petclinic-pvc
+      - name: docker-sock
+        hostPath:
+          path: /var/run/docker.sock
 ---
 #메탈lb설정
 apiVersion: v1
@@ -42,7 +42,7 @@ spec:
     app: petclinic
   ports:
     - protocol: TCP
-      ports: 80
+      port: 80
       targetPort: 8080
 ---
 #인그레스 설정
