@@ -1,3 +1,4 @@
-FROM eclipse-temurin:21-jre-alpine
-COPY target/*.jar spring-petclinic.jar
-ENTRYPOINT ["java", "-jar", "spring-petclinic.jar"]
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY target/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
