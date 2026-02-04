@@ -53,7 +53,7 @@ metadata:
 spec:
   rules:
   - host: www.hyper502.com
-  - http:
+    http:
       paths:
       - path: /
         pathType: Prefix
