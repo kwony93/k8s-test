@@ -22,15 +22,10 @@ spec:
         volumeMounts:
         - name: petclinic-home
           mountPath: /var/petclinic-home
-        - name: docker-sock
-          mountPath: /var/run/docker.sock
       volumes:
       - name: petclinic-home
         persistentVolumeClaim:
           claimName: petclinic-pvc
-      - name: docker-sock
-        hostPath:
-          path: /var/run/docker.sock
 ---
 #메탈lb설정
 apiVersion: v1
