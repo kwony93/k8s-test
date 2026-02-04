@@ -52,6 +52,7 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
+  - host: www.hyper502.com
   - http:
       paths:
       - path: /
