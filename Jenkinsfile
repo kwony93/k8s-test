@@ -1,11 +1,11 @@
 pipeline {
     agent any
-    
+    //tools set
     tools {
         maven 'maven-3.9'
         jdk 'openjdk-17'
     }
-
+    //env set
     environment {
         DOCKER_IMAGE = "hklee2748/petclinic"
         DOCKER_HUB_ID = "docker-hub-key"
@@ -48,6 +48,9 @@ pipeline {
                     // 환경변수 처리를 더 안전하게 하기 위해 더블 쿼트 확인
                     sh "sed -i 's|${DOCKER_IMAGE}:latest|${DOCKER_IMAGE}:${BUILD_NUMBER}|g' k8s/deployment.yaml"
                     sh 'kubectl apply -f k8s/deployment.yaml'
+                    sh 'kubectl apply -f k8s/ingress.yaml'
+                    sh 'kubectl apply -f k8s/service.yaml'
+                    sh 'kubectl apply -f k8s/pvc.yaml'
                     sh "kubectl rollout status deployment petclinic"
                 }
             }
